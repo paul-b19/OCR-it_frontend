@@ -5,8 +5,14 @@ const Collection = (props) => {
 
 
     return (
-        <div className = "collection-container"> note preview</div>
+        <div className = "collection-container"> 
+            <div>
+            note preview
+            </div>
+        </div>
 
 
     )
 }
+
+export default Collection
