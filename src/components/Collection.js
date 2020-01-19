@@ -1,5 +1,6 @@
 import React from 'react'
 
+<<<<<<< HEAD
 const Collection = (props) => {
 
   const documents = props.allDocuments.map((document, index) =>
@@ -17,6 +18,25 @@ const Collection = (props) => {
       </ul>
     </div>
   )
+=======
+class Collection extends React.Component {
+  
+  
+
+    render () {
+        console.log(this.props.collection)
+        return(
+            <div className = "collection-container"> 
+                <div>User Notes Collection</div>
+                {this.props.loadNotes(this.props.collection)}
+                
+    
+            </div>
+    
+    
+        )
+    }
+>>>>>>> carlos
 }
 
 export default Collection
