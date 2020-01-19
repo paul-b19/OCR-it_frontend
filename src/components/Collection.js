@@ -1,18 +1,22 @@
 import React from 'react'
 
-const Collection = (props) => {
+class Collection extends React.Component {
+  
   
 
-
-    return (
-        <div className = "collection-container"> 
-            <div>
-            note preview
+    render () {
+        console.log(this.props.collection)
+        return(
+            <div className = "collection-container"> 
+                <div>User Notes Collection</div>
+                {this.props.loadNotes(this.props.collection)}
+                
+    
             </div>
-        </div>
-
-
-    )
+    
+    
+        )
+    }
 }
 
 export default Collection

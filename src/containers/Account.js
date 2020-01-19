@@ -9,22 +9,30 @@ import Loading from '../components/Loading'
 
 class Account extends React.Component {
 
-    constructor (props) {
-        super ()
-        this.state = {
+
+        state = {
+            user: 1,
+            collectionAll: null,
+            collectionUser: null,
             view: "upload", //"upload"/"new"/"edit"/"load"
             pic: null,
             picUrl: '',
-            note: "Sample textSample textSample textSample textSample textSample textSample textSample textSample textSample textSample textSample textSample textSample textSample textSample textSample text"
+            note: ""
         }
-        this.handleImageChange = this.handleImageChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+
 
 
     componentDidMount() {
         console.log("mounted account container")
 
+        fetch('http://localhost:3000/records')
+        .then(resp => resp.json())
+        .then(data => {
+            this.setState({
+                collectionAll: data,
+                collectionUser: data.filter( user => user.user_id === this.state.user)
+            })
+        })
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -32,33 +40,58 @@ class Account extends React.Component {
         console.log("state:", this.state)
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        // TODO: do something with -> this.state.file
-        console.log("submit pic",this.props.pic, this.props.picUrl)
-        this.setState({
-            view: 'new'
-        })
-  
-    }
     
-    handleImageChange(e) {
+    handleImageChange = (e) => {
         e.preventDefault();
-    
+        
         let reader = new FileReader();
         let file = e.target.files[0];
-    
+        
         reader.onloadend = () => {
-          this.setState({
-            pic: file,
-            picUrl: reader.result
-          });
+            this.setState({
+                pic: file,
+                picUrl: reader.result
+            });
         }
-    
+        
         reader.readAsDataURL(file)
     }
+    
+    updateText = (text) => {
+        this.setState({
+            note: text
+        })
+    }
+    
+    uploadImg = (e) => {
+        e.preventDefault();
+        console.log("send POST request back end and update state.note from API")
+        this.setState({
+            view: 'new',
+            note: "text from bakcend from API"
+        })
+        
+    }
 
-    updateText
+    updateNote = () => {
+        console.log("send PATCH request to back end to update note ")
+        this.setState({
+            view: 'edit',
+            note: "updated text edited by user"
+        })
+    }
+    
+    // *** no idea why i keep getting a type error
+    // the parameter "notes" is appearing as null
+    loadNotes = (notes) => { 
+        // console.dir(notes)
+        return notes.map( each => <Loading />)
+
+        // return notes.map( each => <div> 
+        //     {each.title} 
+        //     <div/>
+        // )	
+    }
 
 
 
@@ -71,7 +104,7 @@ class Account extends React.Component {
                     pic= {this.state.pic} 
                     picUrl= {this.state.picUrl} 
                     handleImageChange = {this.handleImageChange} 
-                    handleSubmit = {this.handleSubmit}
+                    uploadImg = {this.uploadImg}
                     />
                 break;
         
@@ -83,14 +116,24 @@ class Account extends React.Component {
                             <Note 
                                 note = {this.state.note}
                                 updateText = {this.updateText}
+                                updateNote = {this.updateNote}
                             />
                         </div>
                 break;
         
             case "edit":
                 view = <div>
-                            <Upload />
-                            <Note />
+                            <Upload 
+                                pic= {this.state.pic} 
+                                picUrl= {this.state.picUrl} 
+                                handleImageChange = {this.handleImageChange} 
+                                handleSubmit = {this.uploadImg}
+                            />
+                            <Note 
+                                note = {this.state.note}
+                                updateText = {this.updateText}
+                                updateNote = {this.updateNote}
+                            />
                         </div>
                 break;
             case "load":
@@ -103,7 +146,9 @@ class Account extends React.Component {
         return(
             <div>
                 <NavBar />
-                <Collection />
+                <Collection 
+                    collection = {this.state.collectionUser}
+                    loadNotes = {this.loadNotes}/>
                 <div>{view}</div>
             </div>
         )

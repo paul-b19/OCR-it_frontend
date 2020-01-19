@@ -5,11 +5,12 @@ const Note = (props) => {
     return(
         <Fragment>
             <br/>
+            <div>Edit note</div>
             <br/>
-            <form>
-                <textarea  value={props.note} onChange= {this.props.updateText}/>
-            </form>
-                <button type ="submit">Submit</button>
+            <textarea value={props.note} onChange={(e) => props.updateText(e.target.value)}/>
+            <br />
+            <br />
+            <button onClick={props.updateNote}>Submit</button>
         </Fragment>
     )
 }
