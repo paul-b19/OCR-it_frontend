@@ -20,10 +20,10 @@ class Account extends React.Component {
     searchValue: ''
   }
 
-  // const baseUrl = 'http://localhost:3000/'
+  baseUrl = 'http://localhost:3000/'
   
   componentDidMount() {
-    fetch(`http://localhost:3000/users/${this.state.userId}`)
+    fetch(`${this.baseUrl}users/${this.state.userId}`)
       .then(resp => resp.json())
       .then(data => {
         this.setState({
@@ -54,7 +54,7 @@ class Account extends React.Component {
     data.append('language', this.state.language)
     data.append('user_id', this.state.userId)
 
-    fetch('http://localhost:3000/records', {
+    fetch(`${this.baseUrl}records`, {
       method: 'POST',
       body: data
     })
@@ -89,7 +89,7 @@ class Account extends React.Component {
   }
   
   handleEditSubmit = doc => {
-    fetch(`http://localhost:3000/records/${doc.id}`, {
+    fetch(`${this.baseUrl}records/${doc.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
