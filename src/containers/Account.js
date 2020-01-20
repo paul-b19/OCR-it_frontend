@@ -27,7 +27,7 @@ class Account extends React.Component {
       .then(resp => resp.json())
       .then(data => {
         this.setState({
-          allDocuments: data.records
+            note: text
         })
       })
       .catch(error => console.log('Error', error))
