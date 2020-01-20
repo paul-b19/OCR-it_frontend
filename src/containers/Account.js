@@ -1,126 +1,180 @@
 import React from 'react';
 import NavBar from '../components/NavBar'
 import Upload from '../components/Upload'
-import Picture from '../components/Picture'
-import Note from '../components/Note'
+import Document from '../components/Document'
+import Edit from '../components/Edit'
 import Collection from '../components/Collection'
-import Loading from '../components/Loading'
 
 
 class Account extends React.Component {
-
-  constructor (props) {
-    super ()
-    this.state = {
-      userId: 11,
-      view: "upload", //"upload"/"new"/"edit"/"load"
-      pic: null,
-      picUrl: '',
-      allDocuments: []
-    }
-    this.handleImageChange = this.handleImageChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
   
-  // state = {
-  //   userId: 11,
-  //   view: 'upload', //"upload"/"new"/"edit"/"load"
-  //   pic: null,
-  //   picUrl: '',
-  //   allDocuments: []
-  // }
+  state = {
+    userId: 11,
+    view: "upload/document", // "upload/edit"
+    allDocuments: [],
+    document: '',
+    image: null,
+    imageUrl: process.env.PUBLIC_URL + '/example.jpg',
+    // imageUrl: null,
+    language: 'ENG',
+    searchValue: ''
+  }
 
-
+  // const baseUrl = 'http://localhost:3000/'
+  
   componentDidMount() {
     fetch(`http://localhost:3000/users/${this.state.userId}`)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data.records)
         this.setState({
           allDocuments: data.records
         })
       })
+      .catch(error => console.log('Error', error))
   }
 
-  // componentDidUpdate(prevProps, prevState){
-  //   console.log("prevState:", prevState)
-  //   console.log("state:", this.state)
-  // }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    // TODO: do something with -> this.state.file
-    console.log("submit pic",this.props.pic, this.props.picUrl)
+  handleUpload = e => {
     this.setState({
-        view: 'new'
+      image: e.target.files[0],
+      imageUrl: URL.createObjectURL(e.target.files[0])
     })
   }
-    
-  handleImageChange(e) {
-    e.preventDefault()
-  
-    let reader = new FileReader()
-    let file = e.target.files[0]
-  
-    reader.onloadend = () => {
-      this.setState({
-        pic: file,
-        picUrl: reader.result
-      })
-    }
-  
-    reader.readAsDataURL(file)
+
+  handleLanguage = e => {
+    this.setState({
+      language: e.target.value
+    })
   }
 
-    updateText
+  handleUploadSubmit = e => {
+    e.preventDefault()
+
+    const data = new FormData()
+    data.append('image', this.state.image)
+    data.append('language', this.state.language)
+    data.append('user_id', this.state.userId)
+
+    fetch('http://localhost:3000/records', {
+      method: 'POST',
+      body: data
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      this.setState({
+        view: "upload/edit",
+        document: data
+      })
+    })
+    .catch(error => console.log('Error', error))
+  }
+
+  handleCollection = document => {
+    this.setState({
+      document
+    })
+  }
+
+  handleDocumentEdit = () => {
+    this.setState({
+      view: "upload/edit"
+    })
+  }
+
+  handleEdit = e => {
+    let newDocument = this.state.document
+    newDocument[e.target.name] = e.target.value
+    this.setState({
+      document: newDocument 
+    })
+  }
+  
+  handleEditSubmit = doc => {
+    fetch(`http://localhost:3000/records/${doc.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(doc)
+    })
+      .then(resp => resp.json())
+      .then(doc => {
+        this.setState({
+          document: doc,
+          view: "upload/document"
+        })
+      })
+      .catch(error => console.log('Error', error))
+  }
+
+  handleSearch = e => {
+    this.setState({
+      searchValue: e.target.value
+    })
+  }
 
 
   render () {
+
+    let filteredDocs = [...this.state.allDocuments].filter(doc => 
+      doc.title.toLowerCase().startsWith(this.state.searchValue.toLowerCase()))
     
     let view
     switch (this.state.view) {
-      case "upload":
-        view = <Upload 
-          pic= {this.state.pic} 
-          picUrl= {this.state.picUrl} 
-          handleImageChange = {this.handleImageChange} 
-          handleSubmit = {this.handleSubmit}
-          />
+      case "upload/document":
+        view =
+          <div className="row">
+            <div className="upload col-xs-12 col-sm-6">
+              <Upload imageUrl={this.state.imageUrl} 
+                      handleUpload={this.handleUpload}
+                      handleUploadSubmit={this.handleUploadSubmit}
+                      language={this.state.language}
+                      handleLanguage={this.handleLanguage}
+              />
+            </div>
+            <div className="document col-xs-12 col-sm-6">
+              <Document document={this.state.document}
+                        handleDocumentEdit={this.handleDocumentEdit}
+              />
+            </div>
+          </div> 
         break
-  
-      case "new":
-        view = <div>
-          <Picture 
-            picUrl= {this.state.picUrl} 
-          />
-          <Note 
-            note = {this.state.note}
-            updateText = {this.updateText}
-          />
-        </div>
-        break
-  
-      case "edit":
-        view = <div>
-          <Upload />
-          <Note />
-        </div>
-        break;
-      case "load":
-        view = <div>
-          <Loading />
-        </div>
+      case "upload/edit":
+        view = 
+          <div className="row">
+            <div className="upload col-xs-12 col-sm-6">
+              <Upload imageUrl={this.state.imageUrl} 
+                      handleUpload={this.handleUpload}
+                      handleUploadSubmit={this.handleUploadSubmit}
+                      language={this.state.language}
+                      handleLanguage={this.handleLanguage}
+              />
+            </div>
+            <div className="document col-xs-12 col-sm-6">
+              <Edit document={this.state.document}
+                    allDocuments={filteredDocs}
+                    // allDocuments={this.state.allDocuments}
+                    handleEdit={this.handleEdit}
+                    handleEditSubmit={this.handleEditSubmit}
+              />
+            </div>
+          </div> 
         break
     }
+
     return(
       <div>
-        <NavBar />
+        <NavBar searchValue={this.state.searchValue}
+                handleSearch={this.handleSearch}
+        />
         <div className="wrapper">
-          <div className="main">
+          <div className="main container-fluid">
             <div>{view}</div>
           </div>
           <div className="sidebar">
-            <Collection allDocuments={this.state.allDocuments}/>
+            <Collection allDocuments={filteredDocs}
+            // <Collection allDocuments={this.state.allDocuments}
+                        handleCollection={this.handleCollection}
+            />
           </div>
         </div>
       </div>

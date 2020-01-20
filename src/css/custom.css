@@ -1,8 +1,14 @@
+/* navbar */
 .logo {
   height: auto;
   width: 24vh;
 }
 
+.navbar {
+  height: 8vh;
+}
+
+/* account */
 .wrapper {
   display: flex;
   justify-content: space-between;
@@ -12,11 +18,11 @@
   border: 3px solid black;
   border-radius: 10px;
   padding: 15px;
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 
 .main {
-  width: 80%;
+  width: 70%;
   height: 92vh;
   position: -webkit-sticky;
   position: sticky;
@@ -24,9 +30,16 @@
 }
 
 .sidebar {
-  width: 20%;
-  height: 150vh;
+  width: 30%;
+  min-height: 92vh;
+  height: min-content;
   margin-top: 8vh;
-  /* position: -webkit-sticky;
-  position: sticky; */
+}
+
+/* upload/note/edit */
+.upload, .document, .edit {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 15px;
+  /* background-color: rgb(192, 192, 192); */
 }
