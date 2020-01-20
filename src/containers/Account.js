@@ -9,7 +9,7 @@ import Collection from '../components/Collection'
 class Account extends React.Component {
   
   state = {
-    userId: 11,
+    userId: null,
     view: "upload/document", // "upload/edit"
     allDocuments: [],
     document: '',
@@ -23,10 +23,11 @@ class Account extends React.Component {
   baseUrl = 'http://localhost:3000/'
   
   componentDidMount() {
-    fetch(`${this.baseUrl}users/${this.state.userId}`)
+    fetch(`${this.baseUrl}users/${this.props.userId}`)
       .then(resp => resp.json())
       .then(data => {
         this.setState({
+          userId: this.props.userId,
           allDocuments: data.records
         })
       })
@@ -112,6 +113,12 @@ class Account extends React.Component {
     })
   }
 
+  logOut = () => {
+    this.setState({
+      userId: null
+    })
+    this.props.logOut()
+  }
 
   render () {
 
@@ -165,6 +172,7 @@ class Account extends React.Component {
       <div>
         <NavBar searchValue={this.state.searchValue}
                 handleSearch={this.handleSearch}
+                logOut = {this.logOut}
         />
         <div className="wrapper">
           <div className="main container-fluid">
