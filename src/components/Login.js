@@ -1,34 +1,88 @@
-import React, {Fragment} from 'react'
-import {Link} from 'react-router-dom'
-
-const LogIn = (props) => {
+import React, { Fragment } from 'react'
+import Logo from '../images/logo.png'
 
 
-  return(
-    <Fragment>
-    <div> Login page 
-    </div>
-    <form>
-    <label>
-      Name:
-      <input onChange = {props.handleForm} value = {props.username} type="text" name="username"/>
-    </label>
-    <br/>
-    <label>
-      Password:
-      <input onChange = {props.handleForm} value = {props.password} type="password" name="password"/>
-      <br/>
-      {/* ternary checking props.action*/}
-      <button onClick = {props.logIn} type="button" value="Submit">Login</button>
-      <br/>
-      <button onClick = {props.toggleAction} type="submit" value="Submit">Create Account</button>
-      <br/>
-      <Link to= '/account'> To Account</Link>
-    </label>
+class LogIn extends React.Component {
 
-    </form>
-    </Fragment>
-  )
+  state = {
+    login: true   // "login"/"signup"
+  }
+
+  handleForm = () => {
+    this.setState({
+      login: !this.state.login
+    })
+  }
+
+  render() {
+
+    let form
+    if (this.state.login) {
+      form = <Fragment>
+        <div className="form-group">
+          <label className="col-form-label">Username</label>
+          <input type="text" className="form-control" name="username"
+                 onChange={this.props.handleForm} value={this.props.username}/>
+        </div>
+  
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" class="form-control" name="password" 
+                 onChange={this.props.handleForm} value={this.props.password}/>
+        </div>
+
+        <div class="form-group">
+          <button type="button" class="btn btn-primary" onClick={this.props.logIn}>Log In</button>
+          <button type="button" class="btn btn-primary" onClick={this.handleForm}>Create account</button>
+        </div>
+      </Fragment>
+    } else {
+      form = <Fragment>
+        <div className="form-group">
+          <label className="col-form-label">Username</label>
+          <input type="text" className="form-control" name="username"
+                 onChange={this.props.handleForm} value={this.props.username}/>
+        </div>
+
+        {/* <div className="form-group has-danger">
+          <label className="form-control-label">Username</label>
+          <input type="text" className="form-control is-invalid" name="username"
+                 onChange={this.props.handleForm} value={this.props.username}/>
+          <div className="invalid-feedback">Sorry, that username's taken. Try another</div>
+        </div> */}
+  
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" class="form-control" name="password" 
+                 onChange={this.props.handleForm} value={this.props.password}/>
+        </div>
+
+        <div class="form-group">
+            <label>Confirm password</label>
+            <input type="password" class="form-control" name="passwordConf" 
+                   onChange={this.props.handleForm} value={this.props.confirmPassword}/>
+        </div>
+
+        <div class="form-group">
+          <button type="button" class="btn btn-primary" onClick={this.props.signUp}>Submit</button>
+          <button type="button" class="btn btn-primary" onClick={this.handleForm}>Back to login</button>
+        </div>
+      </Fragment>
+    }
+
+    return(
+      <div className="login">
+        <div className="login-container">
+          <div>
+            <img className="login-logo" src={Logo} alt='Logo'/>
+          </div>
+
+          {form}
+    
+        </div>
+      </div>
+    )
+  }
 }
 
 export default LogIn

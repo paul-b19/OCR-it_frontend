@@ -4,6 +4,8 @@ import Upload from '../components/Upload'
 import Document from '../components/Document'
 import Edit from '../components/Edit'
 import Collection from '../components/Collection'
+import Example from '../images/example.png'
+// import Loading from '../components/Loading';
 
 
 class Account extends React.Component {
@@ -13,9 +15,8 @@ class Account extends React.Component {
     view: "upload/document", // "upload/edit"
     allDocuments: [],
     document: '',
-    image: null,
-    imageUrl: process.env.PUBLIC_URL + '/example.jpg',
-    // imageUrl: null,
+    image: null,       // ?????????
+    imageUrl: Example,
     language: 'ENG',
     searchValue: ''
   }
@@ -170,6 +171,7 @@ class Account extends React.Component {
 
     return(
       <div>
+        {/* <Loading /> */}
         <NavBar searchValue={this.state.searchValue}
                 handleSearch={this.handleSearch}
                 logOut = {this.logOut}

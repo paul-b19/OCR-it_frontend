@@ -1,11 +1,12 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import Logo from '../images/logo.png'
 
 const NavBar  = (props) => {
 
   return (
     <nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
-      <img className="logo navbar-brand" src={process.env.PUBLIC_URL + '/logo.png'} alt='Logo'/>
+      <img className="logo navbar-brand" src={Logo} alt='Logo'/>
 
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
