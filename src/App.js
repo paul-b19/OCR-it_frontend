@@ -18,7 +18,6 @@ class App extends React.Component {
 
 
   signUp = () => {
-    console.log ("login")
     if (this.state.password === this.state.passwordConf) {
       fetch("http://localhost:3000/signup", {
         method: 'POST',
@@ -32,13 +31,14 @@ class App extends React.Component {
       })
       .then(resp => resp.json())
       .then(response => {
-        console.log(response)
         if (response.errors) {
           alert(response.errors)
         } else {
           this.setState({
             userId: response.id,
-            username: response.username
+            username: '',
+            password: ''
+            // username: response.username
           }, () => {this.props.history.push("/account")})
         }
       })
@@ -60,19 +60,20 @@ class App extends React.Component {
     })
     .then(resp => resp.json())
     .then(response => {
-      console.log(response)
       if (response.errors) {
         alert(response.errors)
       } else {
         this.setState({
           userId: response.id,
-          username: response.username
+          username: '',
+          password: ''
+          // username: response.username
         }, () => {this.props.history.push("/account")})
       }
     })
   }
   
-  logOut = () => { console.log("log out")
+  logOut = () => {
     this.setState({
       userId: null,
       signUp: false
@@ -80,7 +81,6 @@ class App extends React.Component {
   }
 
   handleForm = (e) => {
-    console.log(e.target.value)
     this.setState({
       [e.target.name]: e.target.value
     })
@@ -99,8 +99,6 @@ class App extends React.Component {
             username = {this.state.username}
             password = {this.state.password}
             confirmPassword = {this.state.passwordConf}
-            // action = {this.state.action_type}
-            // toggleAction = {this.toggleAction}
             />} />
           
           <Route exact path="/account" render={(routerProps) => this.state.userId ? 

@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import Logo from '../images/logo.png'
 
-
 class LogIn extends React.Component {
 
   state = {
@@ -25,15 +24,15 @@ class LogIn extends React.Component {
                  onChange={this.props.handleForm} value={this.props.username}/>
         </div>
   
-        <div class="form-group">
+        <div className="form-group">
           <label>Password</label>
-          <input type="password" class="form-control" name="password" 
+          <input type="password" className="form-control" name="password" 
                  onChange={this.props.handleForm} value={this.props.password}/>
         </div>
 
-        <div class="form-group">
-          <button type="button" class="btn btn-primary" onClick={this.props.logIn}>Log In</button>
-          <button type="button" class="btn btn-primary" onClick={this.handleForm}>Create account</button>
+        <div className="form-group">
+          <button type="button" className="btn btn-primary" onClick={this.props.logIn}>Log In</button>
+          <button type="button" className="btn btn-primary" onClick={this.handleForm}>Create account</button>
         </div>
       </Fragment>
     } else {
@@ -51,21 +50,21 @@ class LogIn extends React.Component {
           <div className="invalid-feedback">Sorry, that username's taken. Try another</div>
         </div> */}
   
-        <div class="form-group">
+        <div className="form-group">
           <label>Password</label>
-          <input type="password" class="form-control" name="password" 
+          <input type="password" className="form-control" name="password" 
                  onChange={this.props.handleForm} value={this.props.password}/>
         </div>
 
-        <div class="form-group">
+        <div className="form-group">
             <label>Confirm password</label>
-            <input type="password" class="form-control" name="passwordConf" 
+            <input type="password" className="form-control" name="passwordConf" 
                    onChange={this.props.handleForm} value={this.props.confirmPassword}/>
         </div>
 
-        <div class="form-group">
-          <button type="button" class="btn btn-primary" onClick={this.props.signUp}>Submit</button>
-          <button type="button" class="btn btn-primary" onClick={this.handleForm}>Back to login</button>
+        <div className="form-group">
+          <button type="button" className="btn btn-primary" onClick={this.props.signUp}>Submit</button>
+          <button type="button" className="btn btn-primary" onClick={this.handleForm}>Back to login</button>
         </div>
       </Fragment>
     }

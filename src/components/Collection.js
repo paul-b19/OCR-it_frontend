@@ -1,4 +1,5 @@
 import React from 'react'
+import FolderIcon from '../images/folder2.png'
 
 const Collection = (props) => {
 
@@ -17,7 +18,7 @@ const Collection = (props) => {
         <div className="panel-heading" role="tab" id={`collapseListGroupHeading${index}`}>
           <h4 className="panel-title">
             <a className="collapsed" data-toggle="collapse" href={`#collapseListGroup${index}`} aria-expanded="false" aria-controls={`collapseListGroup${index}`}>
-              {folder}
+              <img className="folder-icon" src={FolderIcon} alt='folder-icon'/>  {folder}
             </a>
           </h4>
         </div>

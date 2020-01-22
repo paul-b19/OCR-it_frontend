@@ -5,7 +5,9 @@ import Document from '../components/Document'
 import Edit from '../components/Edit'
 import Collection from '../components/Collection'
 import Example from '../images/example.png'
-// import Loading from '../components/Loading';
+import Loading from '../components/Loading'
+import About from '../components/About'
+
 
 
 class Account extends React.Component {
@@ -18,12 +20,17 @@ class Account extends React.Component {
     image: null,       // ?????????
     imageUrl: Example,
     language: 'ENG',
-    searchValue: ''
+    searchValue: '',
+    progressBar: false
   }
 
   baseUrl = 'http://localhost:3000/'
   
   componentDidMount() {
+    this.fetchCollection()
+  }
+
+  fetchCollection = () => {
     fetch(`${this.baseUrl}users/${this.props.userId}`)
       .then(resp => resp.json())
       .then(data => {
@@ -50,6 +57,13 @@ class Account extends React.Component {
 
   handleUploadSubmit = e => {
     e.preventDefault()
+    if (!this.state.image) {
+      return null
+    }
+
+    this.setState({
+      progressBar: true
+    })
 
     const data = new FormData()
     data.append('image', this.state.image)
@@ -64,10 +78,12 @@ class Account extends React.Component {
     .then(data => {
       this.setState({
         view: "upload/edit",
-        document: data
+        document: data,
+        progressBar: false
       })
+      this.fetchCollection()
     })
-    .catch(error => console.log('Error', error))
+    .catch(error => alert('Error', error))
   }
 
   handleCollection = document => {
@@ -104,6 +120,7 @@ class Account extends React.Component {
           document: doc,
           view: "upload/document"
         })
+        this.fetchCollection()
       })
       .catch(error => console.log('Error', error))
   }
@@ -122,6 +139,8 @@ class Account extends React.Component {
   }
 
   render () {
+
+    let loading = this.state.progressBar ? <Loading /> : null
 
     let filteredDocs = [...this.state.allDocuments].filter(doc => 
       doc.title.toLowerCase().startsWith(this.state.searchValue.toLowerCase()))
@@ -157,10 +176,9 @@ class Account extends React.Component {
                       handleLanguage={this.handleLanguage}
               />
             </div>
-            <div className="document col-xs-12 col-sm-6">
+            <div className="edit col-xs-12 col-sm-6">
               <Edit document={this.state.document}
                     allDocuments={filteredDocs}
-                    // allDocuments={this.state.allDocuments}
                     handleEdit={this.handleEdit}
                     handleEditSubmit={this.handleEditSubmit}
               />
@@ -171,7 +189,8 @@ class Account extends React.Component {
 
     return(
       <div>
-        {/* <Loading /> */}
+        {loading}
+        <About />
         <NavBar searchValue={this.state.searchValue}
                 handleSearch={this.handleSearch}
                 logOut = {this.logOut}
@@ -182,7 +201,6 @@ class Account extends React.Component {
           </div>
           <div className="sidebar">
             <Collection allDocuments={filteredDocs}
-            // <Collection allDocuments={this.state.allDocuments}
                         handleCollection={this.handleCollection}
             />
           </div>

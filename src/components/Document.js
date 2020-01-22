@@ -12,7 +12,7 @@ const Document = (props) => {
           <h3>{props.document.title}</h3>
         </div>
         <div>
-          <p>{props.document.body}</p>
+          <p className="text-justify">{props.document.body}</p>
         </div>
         <div>
           <button type="button" className="btn btn-primary" onClick={props.handleDocumentEdit}>Edit</button>
