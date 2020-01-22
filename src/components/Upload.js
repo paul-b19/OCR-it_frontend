@@ -11,7 +11,7 @@ const Upload = (props) => {
             <label className="custom-file-label">Choose image</label>
           </div>
           <div className="input-group-append">
-            <button type="submit" value="Submit" className="input-group-text">Submit</button>
+            <button type="submit" value="Submit" className="input-group-text" data-toggle="modal" data-target="#loading">Submit</button>
           </div>
         </div>
         <div className="input-group mb-3 text-left">

@@ -140,7 +140,7 @@ class Account extends React.Component {
 
   render () {
 
-    let loading = this.state.progressBar ? <Loading /> : null
+    // let loading = this.state.progressBar ? <Loading /> : null
 
     let filteredDocs = [...this.state.allDocuments].filter(doc => 
       doc.title.toLowerCase().startsWith(this.state.searchValue.toLowerCase()))
@@ -189,7 +189,9 @@ class Account extends React.Component {
 
     return(
       <div>
-        {loading}
+        {/* {loading} */}
+        {/* {this.state.progressBar ? <Loading /> : null} */}
+        {/* <Loading x={this.state.progressBar}/> */}
         <About />
         <NavBar searchValue={this.state.searchValue}
                 handleSearch={this.handleSearch}

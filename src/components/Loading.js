@@ -7,29 +7,50 @@ class Loading extends React.Component {
   }
 
   componentDidMount() {
+    
 
-    // let interval = setInterval(() => {
-    //   if (this.state.x <= 100){
+    //  this.interval = setInterval(() => {
+    //   if (this.state.x < 100){
     //     this.setState({
     //       x: this.state.x + 10 
     //     })
     //     console.log("interval", this.state.x)
     //   } else {
-    //     clearInterval(interval)
+    //     clearInterval(this.interval)
     //   }
-    // },1000)
+    // },500)
   }
+
+  // lifecycle method to compare previousProps & current Props?
+  // so you can check this.props.x was true and is now false
+
+
+
+  // handleLoading = () => {
+  //   if (this.props.x) {
+  //     let interval = setInterval(() => {
+  //       if (this.state.x < 100 && this.props.x){
+  //         this.setState({
+  //           x: this.state.x + 10 
+  //         })
+  //         console.log("interval", this.state.x)
+  //       } else {
+  //         clearInterval(interval)
+  //       }
+  //     },500)
+  //   }
+  // }
 
   render() {
 
     let styleProgressBar = {
       width: `${this.state.x}%`
     }
-
+    
     return(
       <Fragment>
         {/* <!-- Modal --> */}
-        <div id="myModal" className="modal fade" role="dialog">
+        <div id="loading" className="modal fade" role="dialog">
           <div className="modal-dialog">
             {/* <!-- Modal content--> */}
             <div className="modal-content">
