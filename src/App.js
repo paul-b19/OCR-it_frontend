@@ -5,7 +5,6 @@ import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom
 import Login from './components/Login'
 
 
-
 class App extends React.Component {
   state = {
     userId: null,
@@ -16,10 +15,11 @@ class App extends React.Component {
     redirect: false
   } 
 
+  baseUrl = 'http://localhost:3000/'
 
   signUp = () => {
     if (this.state.password === this.state.passwordConf) {
-      fetch("http://localhost:3000/signup", {
+      fetch(`${this.baseUrl}signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -38,7 +38,6 @@ class App extends React.Component {
             userId: response.id,
             username: '',
             password: ''
-            // username: response.username
           }, () => {this.props.history.push("/account")})
         }
       })
@@ -48,7 +47,7 @@ class App extends React.Component {
   }
 
   logIn = () => {
-    fetch("http://localhost:3000/login", {
+    fetch(`${this.baseUrl}login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -67,7 +66,6 @@ class App extends React.Component {
           userId: response.id,
           username: '',
           password: ''
-          // username: response.username
         }, () => {this.props.history.push("/account")})
       }
     })

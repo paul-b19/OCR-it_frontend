@@ -10,7 +10,6 @@ import About from '../components/About'
 import $ from 'jquery'
 
 
-
 class Account extends React.Component {
   
   state = {
