@@ -7,6 +7,7 @@ import Collection from '../components/Collection'
 import Example from '../images/example.png'
 import Loading from '../components/Loading'
 import About from '../components/About'
+import $ from 'jquery'
 
 
 
@@ -17,7 +18,7 @@ class Account extends React.Component {
     view: "upload/document", // "upload/edit"
     allDocuments: [],
     document: '',
-    image: null,       // ?????????
+    image: null,
     imageUrl: Example,
     language: 'ENG',
     searchValue: '',
@@ -61,6 +62,7 @@ class Account extends React.Component {
       return null
     }
 
+    $("#loading").modal('show')
     this.setState({
       progressBar: true
     })
@@ -80,7 +82,7 @@ class Account extends React.Component {
         view: "upload/edit",
         document: data,
         progressBar: false
-      })
+      }, () => {$("#loading").modal('hide')})
       this.fetchCollection()
     })
     .catch(error => alert('Error', error))
@@ -140,8 +142,6 @@ class Account extends React.Component {
 
   render () {
 
-    // let loading = this.state.progressBar ? <Loading /> : null
-
     let filteredDocs = [...this.state.allDocuments].filter(doc => 
       doc.title.toLowerCase().startsWith(this.state.searchValue.toLowerCase()))
     
@@ -189,9 +189,7 @@ class Account extends React.Component {
 
     return(
       <div>
-        {/* {loading} */}
-        {/* {this.state.progressBar ? <Loading /> : null} */}
-        {/* <Loading x={this.state.progressBar}/> */}
+        <Loading progressBar={this.state.progressBar}/>
         <About />
         <NavBar searchValue={this.state.searchValue}
                 handleSearch={this.handleSearch}

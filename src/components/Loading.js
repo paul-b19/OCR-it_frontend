@@ -6,40 +6,22 @@ class Loading extends React.Component {
     x: 0
   }
 
-  componentDidMount() {
-    
-
-    //  this.interval = setInterval(() => {
-    //   if (this.state.x < 100){
-    //     this.setState({
-    //       x: this.state.x + 10 
-    //     })
-    //     console.log("interval", this.state.x)
-    //   } else {
-    //     clearInterval(this.interval)
-    //   }
-    // },500)
+  componentDidUpdate() {
+    if (this.props.progressBar) {
+      this.interval = setInterval(() => {
+        if (this.state.x < 100){
+          this.setState({
+            x: this.state.x + 1 
+          })
+          // console.log("interval", this.state.x)
+        } else {
+          clearInterval(this.interval)
+        }
+      },1000)
+    } else {
+      clearInterval(this.interval)
+    }
   }
-
-  // lifecycle method to compare previousProps & current Props?
-  // so you can check this.props.x was true and is now false
-
-
-
-  // handleLoading = () => {
-  //   if (this.props.x) {
-  //     let interval = setInterval(() => {
-  //       if (this.state.x < 100 && this.props.x){
-  //         this.setState({
-  //           x: this.state.x + 10 
-  //         })
-  //         console.log("interval", this.state.x)
-  //       } else {
-  //         clearInterval(interval)
-  //       }
-  //     },500)
-  //   }
-  // }
 
   render() {
 
@@ -50,8 +32,8 @@ class Loading extends React.Component {
     return(
       <Fragment>
         {/* <!-- Modal --> */}
-        <div id="loading" className="modal fade" role="dialog">
-          <div className="modal-dialog">
+        <div id="loading" tabIndex="-1" className="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered">
             {/* <!-- Modal content--> */}
             <div className="modal-content">
               <div className="modal-body text-center">
